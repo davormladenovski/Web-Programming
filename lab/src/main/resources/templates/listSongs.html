@@ -1,0 +1,57 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>Songs Homepage - Welcome to My Music Store</title>
+    <style>
+        body {
+            width: 800px;
+            margin: auto;
+        }
+        a {
+            text-decoration: none;
+        }
+        button {
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Welcome to My Music Store</h1>
+</header>
+<main>
+    <h2>Choose a song:</h2>
+    <form th:method="POST" th:action="@{/artists}">
+        <div th:each="song : ${songs}">
+            <label>
+                <input type="radio" name="Id" th:value="${song.id}" />
+            </label>
+            <span>
+                Title: <span th:text="${song.title}"></span>,
+                Genre: <span th:text="${song.genre}"></span>,
+                Release Year: <span th:text="${song.releaseYear}"></span>,
+                Album: <span th:text="${song.album.name}"></span>
+            </span>
+
+            <a th:href="@{/songs/edit/{songId}(songId=${song.id})}">
+                <button type="button">Edit</button>
+            </a>
+
+            <a th:href="@{/songs/delete/{songId}(songId=${song.id})}">
+                <button type="button">Delete</button>
+            </a>
+
+            <br />
+            <br />
+        </div>
+        <input type="submit" value="Submit Selected Song" />
+    </form>
+
+    <div style="margin-top: 20px;">
+        <a th:href="@{/songs/add}">
+            <button type="button">Add New Song</button>
+        </a>
+    </div>
+</main>
+</body>
+</html>

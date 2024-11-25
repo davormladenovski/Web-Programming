@@ -1,0 +1,95 @@
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title th:text="${song != null ? 'Edit Song' : 'Add New Song'}"></title>
+    <style>
+        body {
+            width: 800px;
+            margin: auto;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            max-width: 400px;
+            margin: auto;
+        }
+
+        label {
+            margin: 10px 0 5px;
+        }
+
+        input, select, button {
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        /* Error message styles */
+        .error-message {
+            margin-top: 20px;
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .error-message p {
+            margin: 0;
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1 style="text-align: center" th:text="${song != null ? 'Edit Song' : 'Add a New Song'}"></h1>
+</header>
+<main>
+    <form th:action="${actionUrl}" th:method="POST">
+
+        <!-- Song Title -->
+        <label for="title">Title:</label>
+        <input type="text" id="title" name="title" th:value="${song != null ? song.title : ''}" placeholder="Enter song title" required/>
+
+        <!-- Track ID -->
+        <label for="trackId">Track ID:</label>
+        <input type="text" id="trackId" name="trackId" th:value="${song != null ? song.trackId : ''}" placeholder="Enter track ID" required/>
+
+        <!-- Genre -->
+        <label for="genre">Genre:</label>
+        <input type="text" id="genre" name="genre" th:value="${song != null ? song.genre : ''}" placeholder="Enter genre" required/>
+
+        <!-- Release Year -->
+        <label for="releaseYear">Release Year:</label>
+        <input type="number" id="releaseYear" name="releaseYear" th:value="${song != null ? song.releaseYear : ''}" placeholder="Enter release year" required/>
+
+        <label for="albumId">Album:</label>
+        <select id="albumId" name="albumId" required>
+            <option th:each="album : ${albums}" th:value="${album.id}" th:text="${album.name}"
+                    th:selected="${song != null && album.id == song.album.id}"></option>
+        </select>
+
+        <!-- Submit Button -->
+        <button type="submit" th:text="${song != null ? 'Update Song' : 'Add Song'}"></button>
+    </form>
+</main>
+
+<!-- Error Message Display -->
+<div th:if="${hasError}" class="error-message">
+    <p th:text="${error}"></p>
+</div>
+
+</body>
+</html>
