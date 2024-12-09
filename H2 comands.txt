@@ -1,0 +1,26 @@
+INSERT INTO ALBUM (genre, name, release_year)
+VALUES
+('Rock', 'A Night at the Opera', 1975),
+('Pop', 'The Bodyguard', 1992),
+('Pop', 'Thriller', 1982),
+('Pop', '21', 2011),
+('Rock', 'Goodbye Yellow Brick Road', 1973);
+
+INSERT INTO SONG (genre, release_year, title, track_id, album_id)
+VALUES
+('Pop', 1982, 'Billie Jean', 6, 3),
+('Rock', 1972, 'Rocket Man', 9, 5), 
+('Pop', 2011, 'Rolling in the Deep', 7, 4),
+('Pop', 2011, 'Hello', 18, 4),
+('Pop', 1982, 'Thriller', 1, 3),
+('Rock', 1975, 'Bohemian Rhapsody', 3, 1),
+('Pop', 1992, 'I Will Always Love You', 4, 2);
+
+
+INSERT INTO ARTIST (bio, first_name, last_name)
+VALUES
+('Lead vocalist of the r...', 'Freddie', 'Mercury'),
+('American singer and a...', 'Whitney', 'Houston'),
+('Known as the King of P...', 'Michael', 'Jackson'),
+('English singer-songw...', 'Adele', NULL),
+('British singer, songw...', 'Elton', 'John');
