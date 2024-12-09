@@ -1,10 +1,13 @@
 package mk.ukim.finki.wp.lab.service.impl;
 
 
+import jakarta.transaction.Transactional;
+import mk.ukim.finki.wp.lab.model.Album;
 import mk.ukim.finki.wp.lab.model.Artist;
 import mk.ukim.finki.wp.lab.model.Song;
 import mk.ukim.finki.wp.lab.model.exceptions.SameSongsIDException;
-import mk.ukim.finki.wp.lab.repository.SongRepository;
+import mk.ukim.finki.wp.lab.repository.jpa.AlbumRepository;
+import mk.ukim.finki.wp.lab.repository.jpa.SongRepository;
 import mk.ukim.finki.wp.lab.service.SongService;
 import org.springframework.stereotype.Service;
 
@@ -14,9 +17,11 @@ import java.util.List;
 public class SongServiceImpl implements SongService {
 
     public final SongRepository songRepository;
+    public final AlbumRepository albumRepository;
 
-    public SongServiceImpl(SongRepository songRepository) {
+    public SongServiceImpl(SongRepository songRepository, AlbumRepository albumRepository) {
         this.songRepository = songRepository;
+        this.albumRepository = albumRepository;
     }
 
     @Override
@@ -26,17 +31,19 @@ public class SongServiceImpl implements SongService {
 
     @Override
     public Artist addArtistToSong(Artist artist, Song song) {
-        return songRepository.addArtistToSong(artist,song);
+        song.getPerformers().add(artist);
+        songRepository.save(song);
+        return artist;
     }
 
     @Override
     public Song findById(long id) {
-        return songRepository.findById(id);
+        return songRepository.findById(id).orElse(null);
     }
 
     @Override
-    public Song deleteById(long id) {
-        return songRepository.deleteById(id);
+    public void deleteById(long id) {
+        songRepository.deleteById(id);
     }
 
     @Override
@@ -50,12 +57,28 @@ public class SongServiceImpl implements SongService {
     }
 
     @Override
-    public Song addSong(Song song) throws SameSongsIDException {
-        return songRepository.addSong(song);
+    @Transactional
+    public void addSong(String trackId, String title, String genre, int releaseYear, long albumId) throws SameSongsIDException {
+        Album album = albumRepository.findById(albumId).orElse(null);
+
+        if (album == null) {
+            return;
+        }
+
+        if(songRepository.findByTrackId(trackId)!=null){
+            throw new SameSongsIDException();
+        }
+
+        Song song = new Song(trackId, title, genre, releaseYear, album);
+        album.getSongs().add(song);
+
+        songRepository.save(song);
+
     }
 
     @Override
-    public Song editSong(long id, Song updatedSong) throws SameSongsIDException {
-        return songRepository.editSong(id,updatedSong);
+    public Song editSong(long id, Song updatedSong){
+        updatedSong.setId(id);
+        return songRepository.save(updatedSong);
     }
 }

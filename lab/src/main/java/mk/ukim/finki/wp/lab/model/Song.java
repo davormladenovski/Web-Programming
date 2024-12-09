@@ -1,5 +1,6 @@
 package mk.ukim.finki.wp.lab.model;
 
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -8,17 +9,21 @@ import java.util.Random;
 import java.util.UUID;
 
 @Data
+@Entity
 public class Song {
 
     private String trackId;
     private String title;
     private String genre;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private int releaseYear;
-
-    private List<Artist> performers;
-
+    @ManyToMany
+    private List<Artist> performers=new ArrayList<>();
+    @ManyToOne
+    @JoinColumn(name = "album_id", nullable = false)
     private Album album;
 
     public Song(String trackId, String title, String genre, int releaseYear,Album album) {
@@ -26,9 +31,16 @@ public class Song {
         this.title = title;
         this.genre = genre;
         this.releaseYear = releaseYear;
-        this.performers = new ArrayList<>();
-        this.id = new Random().nextLong();
         this.album=album;
     }
+
+    public Song() {
+
+    }
+
+    public void setAlbum(Album album) {
+        this.album = album;
+    }
+
 
 }

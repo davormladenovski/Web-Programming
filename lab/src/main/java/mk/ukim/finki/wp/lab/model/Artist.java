@@ -1,17 +1,25 @@
 package mk.ukim.finki.wp.lab.model;
 
+import jakarta.persistence.*;
 import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
+@Entity
 public class Artist {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(nullable = true)
     private  String firstName;
+    @Column(nullable = true)
     private String lastName;
+    @Column(nullable = true)
     private String bio;
+    @ManyToMany(mappedBy = "performers")
     private List<Song> songsList;
 
     public Artist(Long id, String firstName, String lastName, String bio) {
@@ -22,43 +30,8 @@ public class Artist {
         this.songsList=new ArrayList<>();
     }
 
-    public List<Song> getSongsList() {
-        return songsList;
+    public Artist() {
+
     }
 
-    public void setSongsList(List<Song> songsList) {
-        this.songsList = songsList;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public String getBio() {
-        return bio;
-    }
-
-    public void setBio(String bio) {
-        this.bio = bio;
-    }
 }

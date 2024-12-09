@@ -31,6 +31,7 @@ public class SongController {
             model.addAttribute("error", error);
         }
         model.addAttribute("songs",songService.listSongs());
+        model.addAttribute("albums",albumService.findAll());
         return "listSongs";
     }
 
@@ -49,10 +50,8 @@ public class SongController {
     @PostMapping("/add")
     public String saveSong(@RequestParam String title,@RequestParam String trackId,@RequestParam String genre
          ,@RequestParam int releaseYear,@RequestParam long albumId){
-
-        Album album = albumService.findById(albumId);
         try {
-            songService.addSong(new Song(trackId,title,genre,releaseYear,album));
+            songService.addSong(trackId, title, genre, releaseYear, albumId);
         } catch (SameSongsIDException e) {
             return "redirect:/songs/add?error="+e.getMessage();
         }

@@ -14,9 +14,9 @@
     <h2 th:text="'Release Year: ' + ${album.releaseYear}"></h2>
     <h2>Tracks:</h2>
     <ul>
-        <li th:each="track : ${album.tracks}">
-            <span th:text="${track.title}"></span> -
-            <span th:text="${track.duration}"></span>
+        <li th:each="track : ${album.songs}">
+            <span th:text="${track.trackId}"></span> -
+            <span th:text="${track.title}"></span>
         </li>
     </ul>
 </section>

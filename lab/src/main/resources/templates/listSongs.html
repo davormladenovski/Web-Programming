@@ -52,6 +52,15 @@
             <button type="button">Add New Song</button>
         </a>
     </div>
+    <div style="margin-top: 20px">
+    <form th:method="POST" th:action="@{/album}">
+    <label for="albumId">Choose album and see all details:</label>
+    <select id="albumId" name="albumId" required>
+        <option th:each="album : ${albums}" th:value="${album.id}" th:text="${album.name}"></option>
+    </select>
+        <input type="submit" value="See Details" />
+    </form>
+    </div>
 </main>
 </body>
 </html>

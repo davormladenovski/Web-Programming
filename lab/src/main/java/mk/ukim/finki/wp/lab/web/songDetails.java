@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import mk.ukim.finki.wp.lab.model.Song;
-import mk.ukim.finki.wp.lab.repository.SongRepository;
+import mk.ukim.finki.wp.lab.repository.impl.InMemorySongRepository;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.web.IWebExchange;
@@ -19,9 +19,9 @@ import java.io.IOException;
 public class songDetails extends HttpServlet {
 
     private final SpringTemplateEngine springTemplateEngine;
-    private final SongRepository songRepository;
+    private final InMemorySongRepository songRepository;
 
-    public songDetails(SpringTemplateEngine springTemplateEngine, SongRepository songRepository) {
+    public songDetails(SpringTemplateEngine springTemplateEngine, InMemorySongRepository songRepository) {
         this.springTemplateEngine = springTemplateEngine;
         this.songRepository = songRepository;
     }
