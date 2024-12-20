@@ -8,8 +8,7 @@ import mk.ukim.finki.wp.lab.model.exceptions.SameSongsIDException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
-@Repository
+/*
 public class InMemorySongRepository {
 
     public List<Song> findAll(){
@@ -85,4 +84,4 @@ public class InMemorySongRepository {
 
 
 }
-
+*/

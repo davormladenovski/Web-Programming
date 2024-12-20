@@ -7,8 +7,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import mk.ukim.finki.wp.lab.model.Artist;
-import mk.ukim.finki.wp.lab.repository.impl.InMemoryArtistRepository;
-import mk.ukim.finki.wp.lab.repository.impl.InMemorySongRepository;
+import mk.ukim.finki.wp.lab.repository.jpa.ArtistRepository;
+import mk.ukim.finki.wp.lab.repository.jpa.SongRepository;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 import org.thymeleaf.web.IWebExchange;
@@ -21,11 +21,11 @@ public class artistDetailsServlet extends HttpServlet {
 
     public final SpringTemplateEngine springTemplateEngine;
 
-    public final InMemoryArtistRepository artistRepository;
-    public final InMemorySongRepository songRepository;
+    public final ArtistRepository artistRepository;
+    public final SongRepository songRepository;
 
 
-    public artistDetailsServlet(SpringTemplateEngine springTemplateEngine, InMemoryArtistRepository artistRepository, InMemorySongRepository songRepository) {
+    public artistDetailsServlet(SpringTemplateEngine springTemplateEngine, ArtistRepository artistRepository, SongRepository songRepository) {
         this.springTemplateEngine = springTemplateEngine;
         this.artistRepository = artistRepository;
         this.songRepository = songRepository;

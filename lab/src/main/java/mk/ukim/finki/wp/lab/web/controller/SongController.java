@@ -6,6 +6,8 @@ import mk.ukim.finki.wp.lab.model.exceptions.SameSongsIDException;
 import mk.ukim.finki.wp.lab.service.AlbumService;
 import mk.ukim.finki.wp.lab.service.ArtistService;
 import mk.ukim.finki.wp.lab.service.SongService;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -36,6 +38,7 @@ public class SongController {
     }
 
     @GetMapping("/add")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getAddSongPage(@RequestParam(required = false) String error,Model model){
         if (error != null && !error.isEmpty()) {
             model.addAttribute("hasError", true);
@@ -48,6 +51,7 @@ public class SongController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ADMIN')")
     public String saveSong(@RequestParam String title,@RequestParam String trackId,@RequestParam String genre
          ,@RequestParam int releaseYear,@RequestParam long albumId){
         try {
@@ -60,6 +64,7 @@ public class SongController {
     }
 
     @GetMapping("/edit/{songId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String getEditSongPage(@PathVariable long songId,Model model){
         Song song = songService.findById(songId);
         model.addAttribute("song",song);
@@ -69,6 +74,7 @@ public class SongController {
 
     }
     @PostMapping("/edit/{songId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String editSong(@PathVariable long songId,Song updatedSong,@RequestParam long albumId,Model model){
         try {
             Album album = albumService.findById(albumId);
@@ -82,6 +88,7 @@ public class SongController {
     }
 
     @GetMapping("/delete/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String deleteSong(@PathVariable Long id){
         System.out.println(id);
         songService.deleteById(id);
@@ -89,6 +96,7 @@ public class SongController {
     }
 
     @GetMapping("/details/{songId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public String detailsSongPage(@PathVariable long songId,Model model){
         Song song = songService.findById(songId);
         model.addAttribute("song",song);

@@ -1,4 +1,5 @@
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8">
     <title>Songs Homepage - Welcome to My Music Store</title>
@@ -7,9 +8,11 @@
             width: 800px;
             margin: auto;
         }
+
         a {
             text-decoration: none;
         }
+
         button {
             margin: 0 5px;
         }
@@ -18,13 +21,17 @@
 <body>
 <header>
     <h1>Welcome to My Music Store</h1>
+    <h3 sec:authorize="isAuthenticated()">Welcome: <span sec:authentication="name"></span></h3>
+    <a sec:authorize="isAnonymous()" href="/login">Login</a>
+    <a sec:authorize="isAuthenticated()" href="/logout">Logout</a>
+
 </header>
 <main>
     <h2>Choose a song:</h2>
     <form th:method="POST" th:action="@{/artists}">
         <div th:each="song : ${songs}">
             <label>
-                <input type="radio" name="Id" th:value="${song.id}" />
+                <input type="radio" name="Id" th:value="${song.id}"/>
             </label>
             <span>
                 Title: <span th:text="${song.title}"></span>,
@@ -32,34 +39,37 @@
                 Release Year: <span th:text="${song.releaseYear}"></span>,
                 Album: <span th:text="${song.album.name}"></span>
             </span>
-
-            <a th:href="@{/songs/edit/{songId}(songId=${song.id})}">
-                <button type="button">Edit</button>
-            </a>
-
-            <a th:href="@{/songs/delete/{songId}(songId=${song.id})}">
-                <button type="button">Delete</button>
-            </a>
-
-            <br />
-            <br />
+            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                <a th:href="@{/songs/edit/{songId}(songId=${song.id})}">
+                    <button type="button">Edit</button>
+                </a>
+            </th:block>
+            <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+                <a th:href="@{/songs/delete/{songId}(songId=${song.id})}">
+                    <button type="button">Delete</button>
+                </a>
+            </th:block>
+            <br/>
+            <br/>
         </div>
-        <input type="submit" value="Submit Selected Song" />
+        <input type="submit" value="Submit Selected Song"/>
     </form>
 
-    <div style="margin-top: 20px;">
-        <a th:href="@{/songs/add}">
-            <button type="button">Add New Song</button>
-        </a>
-    </div>
+    <th:block sec:authorize="hasRole('ROLE_ADMIN')">
+        <div style="margin-top: 20px;">
+            <a th:href="@{/songs/add}">
+                <button type="button">Add New Song</button>
+            </a>
+        </div>
+    </th:block>
     <div style="margin-top: 20px">
-    <form th:method="POST" th:action="@{/album}">
-    <label for="albumId">Choose album and see all details:</label>
-    <select id="albumId" name="albumId" required>
-        <option th:each="album : ${albums}" th:value="${album.id}" th:text="${album.name}"></option>
-    </select>
-        <input type="submit" value="See Details" />
-    </form>
+        <form th:method="POST" th:action="@{/album}">
+            <label for="albumId">Choose album and see all details:</label>
+            <select id="albumId" name="albumId" required>
+                <option th:each="album : ${albums}" th:value="${album.id}" th:text="${album.name}"></option>
+            </select>
+            <input type="submit" value="See Details"/>
+        </form>
     </div>
 </main>
 </body>
